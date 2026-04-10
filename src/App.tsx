@@ -36,14 +36,18 @@ export default function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     try {
-      const response = await performSearch(searchQuery, type === 'news' ? 'all' : type);
+      const response = await performSearch(searchQuery, type, page);
       setResults(response.results);
       setAnswer(response.answer);
       if (response.results.length === 0 && !response.answer) {
         setError("The core could not find any results for this query.");
       }
-    } catch (err) {
-      setError("An error occurred while searching the core. Please try again.");
+    } catch (err: any) {
+      if (err.message === "GEMINI_API_KEY_MISSING") {
+        setError("GEMINI_API_KEY is missing. Please add it to your environment variables.");
+      } else {
+        setError("An error occurred while searching the core. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }
