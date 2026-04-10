@@ -43,20 +43,8 @@ export default function App() {
         setError("The core could not find any results for this query.");
       }
     } catch (err: any) {
-      console.error("Search error details:", err);
-      
-      const errorMessage = err.message || "";
-      const errorString = JSON.stringify(err);
-      
-      if (errorMessage === "GEMINI_API_KEY_MISSING") {
-        setError("GEMINI_API_KEY is missing. Please add it to your Vercel environment variables.");
-      } else if (errorMessage.includes("429") || errorString.includes("429") || errorString.includes("RESOURCE_EXHAUSTED")) {
-        setError("Search limit reached (Quota Exceeded). Please wait a moment or use a different API key.");
-      } else if (errorMessage.includes("403") || errorString.includes("403")) {
-        setError("Invalid API Key. Please check your GEMINI_API_KEY in Vercel settings.");
-      } else {
-        setError("An error occurred while searching the core. Please try again.");
-      }
+      console.error("Search error:", err);
+      setError("An error occurred while searching the core. Please try again.");
     } finally {
       setIsLoading(false);
     }
